@@ -38,6 +38,10 @@ public class Vertex {
     return this.name;
   }
 
+  public String getId() {
+    return this.id;
+  }
+
   @Override
   public String toString() {
     return this.id + " " + this.name;
