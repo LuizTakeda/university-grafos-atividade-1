@@ -3,13 +3,19 @@ import java.util.ArrayList;
 public class Vertex {
 
   private ArrayList<EdgeTo> edges;
+  private String id;
+  private String name;
 
-  public Vertex(ArrayList<EdgeTo> edges) {
+  public Vertex(String id, String name, ArrayList<EdgeTo> edges) {
     this.edges = edges;
+    this.id = id;
+    this.name = name;
   }
 
-  public Vertex() {
+  public Vertex(String id, String name) {
     this.edges = new ArrayList<>();
+    this.id = id;
+    this.name = name;
   }
 
   public void addEdge(EdgeTo edge) {
@@ -20,7 +26,20 @@ public class Vertex {
     return this.edges.get(index);
   }
 
+  public ArrayList<EdgeTo> getEdges() {
+    return this.edges;
+  }
+
   public int getSize() {
     return this.edges.size();
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  @Override
+  public String toString() {
+    return this.id + " " + this.name;
   }
 }

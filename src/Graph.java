@@ -5,19 +5,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Graph {
 
-  private ArrayList<Vertex> vertexes;
+  private HashMap<String, Vertex> vertices;
 
   /**
-   * Cria um grafo apartir de um arquivo gexf
+   * Cria um grafo a partir de um arquivo GEXF.
    * 
-   * @param path Caminho para o arquivo gexf
+   * @param path Caminho para o arquivo GEXF
    */
   public Graph(String path) {
-    this.vertexes = new ArrayList<>();
+    this.vertices = new HashMap<>();
 
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -25,27 +25,34 @@ public class Graph {
       File file = new File(path);
       DocumentBuilder db = dbf.newDocumentBuilder();
       Document doc = db.parse(file);
+      doc.getDocumentElement().normalize(); // Optional but good practice
+
       NodeList nodeList = doc.getElementsByTagName("node");
-      NodeList edgeList = doc.getElementsByTagName("edge");
 
       for (int i = 0; i < nodeList.getLength(); i++) {
         Node node = nodeList.item(i);
         String id = node.getAttributes().getNamedItem("id").getNodeValue();
-        String label = node.getAttributes().getNamedItem("label").getNodeValue();
-
-        System.out.println(id + " " + label);
-
-        for (int t = 0; t < edgeList.getLength(); t++) {
-          Node edge = edgeList.item(t);
-
-          String source = edge.getAttributes().getNamedItem("source").getNodeValue();
-          String target = edge.getAttributes().getNamedItem("target").getNodeValue();
-
-          if(source.equals(id)){
-            System.out.println(source + " " + target);
-          }
-        }
+        String name = node.getAttributes().getNamedItem("label").getNodeValue();
+        this.vertices.put(id, new Vertex(id, name));
       }
+
+      NodeList edgeList = doc.getElementsByTagName("edge");
+
+      for (int i = 0; i < edgeList.getLength(); i++) {
+        Node edge = edgeList.item(i);
+
+        String sourceId = edge.getAttributes().getNamedItem("source").getNodeValue();
+        String targetId = edge.getAttributes().getNamedItem("target").getNodeValue();
+
+        Vertex targetVertex = this.vertices.get(targetId);
+
+        this.vertices.get(sourceId).addEdge(new EdgeTo(targetVertex));
+      }
+
+      this.vertices.forEach((key, vertex) -> {
+        System.out.println(vertex);
+        System.out.println(vertex.getEdges());
+      });
 
     } catch (Exception e) {
       e.printStackTrace();
