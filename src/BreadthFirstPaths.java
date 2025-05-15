@@ -1,7 +1,10 @@
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Map.Entry;
 
 public class BreadthFirstPaths {
   private Graph graph;
@@ -11,63 +14,47 @@ public class BreadthFirstPaths {
   }
 
   public HashMap<String, Integer> eccentricity() {
-    // Mapa que armazenará o valor da excentricidade de cada vértice
     HashMap<String, Integer> result = new HashMap<>();
 
-    // Conjunto com os IDs de todos os vértices do grafo
     Set<String> verticesId = this.graph.getVerticesId();
 
-    // Para cada vértice do grafo, calculamos sua excentricidade
-    for (String targetVertexId : verticesId) {
-      // Mapa que indica se um vértice já foi visitado
-      HashMap<String, Boolean> visit = new HashMap<>();
-      for (String id : verticesId) {
-        visit.put(id, false); // Inicialmente, nenhum vértice foi visitado
-      }
+    for (String targetVerticeId : verticesId) {
+      int max_dist = 0;
+      Set<Vertex> visited = new HashSet<>();
 
-      // Fila com os vértices a serem visitados na próxima camada da BFS
-      Queue<Vertex> queueNextLayer = new LinkedList<>();
-      queueNextLayer.add(this.graph.getVertex(targetVertexId));
+      Queue<Entry<Vertex, Integer>> queue = new LinkedList<>();
+      queue.add(Map.entry(this.graph.getVertex(targetVerticeId), max_dist));
 
-      int eccentricity = 0; // Contador de camadas da BFS (excentricidade)
+      while (!queue.isEmpty()) {
+        Entry<Vertex, Integer> currentVertexDist = queue.poll();
 
-      // Executa enquanto houver vértices para visitar
-      while (!queueNextLayer.isEmpty()) {
-        // Copia a fila atual e limpa a fila da próxima camada
-        Queue<Vertex> queueCurrentLayer = new LinkedList<>(queueNextLayer);
-        queueNextLayer.clear();
+        Vertex vertex = currentVertexDist.getKey();
+        int dist = currentVertexDist.getValue();
 
-        // Processa todos os vértices da camada atual
-        while (!queueCurrentLayer.isEmpty()) {
-          Vertex vertex = queueCurrentLayer.poll();
+        if (visited.contains(vertex)) {
+          continue;
+        }
 
-          // Pula se o vértice já foi visitado
-          if (visit.get(vertex.getId()))
+        visited.add(vertex);
+
+        if (dist > max_dist) {
+          max_dist = dist;
+        }
+
+        for (EdgeTo edge : vertex.getEdges()) {
+          Vertex vertex_neighbor = edge.getVertex();
+
+          if (visited.contains(vertex_neighbor)) {
             continue;
-
-          // Marca o vértice como visitado
-          visit.put(vertex.getId(), true);
-
-          // Adiciona os vizinhos não visitados à próxima camada
-          for (EdgeTo edge : vertex.getEdges()) {
-            Vertex neighbor = edge.getVertex();
-            if (!visit.get(neighbor.getId())) {
-              queueNextLayer.add(neighbor);
-            }
           }
-        }
 
-        // Se houver vértices na próxima camada, incrementa a excentricidade
-        if (!queueNextLayer.isEmpty()) {
-          eccentricity++;
+          queue.add(Map.entry(vertex_neighbor, dist + 1));
         }
       }
 
-      // Armazena a excentricidade calculada para o vértice
-      result.put(targetVertexId, eccentricity);
+      result.put(this.graph.getVertex(targetVerticeId).toString(), max_dist);
     }
 
-    // Retorna o mapa com as excentricidades de todos os vértices
     return result;
   }
 }

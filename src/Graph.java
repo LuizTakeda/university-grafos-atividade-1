@@ -6,8 +6,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class Graph {
 
@@ -46,9 +44,11 @@ public class Graph {
         String sourceId = edge.getAttributes().getNamedItem("source").getNodeValue();
         String targetId = edge.getAttributes().getNamedItem("target").getNodeValue();
 
+        Vertex sourceVertex = this.vertices.get(sourceId);
         Vertex targetVertex = this.vertices.get(targetId);
 
         this.vertices.get(sourceId).addEdge(new EdgeTo(targetVertex));
+        this.vertices.get(targetId).addEdge(new EdgeTo(sourceVertex));
       }
 
       this.vertices.forEach((key, vertex) -> {
