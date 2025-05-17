@@ -17,9 +17,9 @@ import java.util.Vector;
  * Onde `N` é o número total de vértices alcançáveis e `d(v, u)` é a menor
  * distância de `v` até `u`.
  * 
- * **Interpretação**: Quanto maior o valor, mais "central" é o vértice na rede.
+ * Interpretação: Quanto maior o valor, mais "central" é o vértice na rede.
  * 
- * **Cálculo**: Para cada vértice, é realizada uma BFS para somar as distâncias
+ * Cálculo: Para cada vértice, é realizada uma BFS para somar as distâncias
  * mínimas até os demais.
  * 
  */
