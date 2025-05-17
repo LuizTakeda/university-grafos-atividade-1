@@ -4,6 +4,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -71,5 +73,9 @@ public class Graph {
 
   public Set<String> getVerticesId(){
     return this.vertices.keySet();
+  }
+
+  public Collection<Vertex> getVertices(){
+    return this.vertices.values();
   }
 }

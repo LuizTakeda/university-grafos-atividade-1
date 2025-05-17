@@ -6,6 +6,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.apache.commons.math3.geometry.spherical.twod.Edge;
+
 public class BreadthFirstPaths {
   private Graph graph;
 
@@ -53,6 +55,50 @@ public class BreadthFirstPaths {
       }
 
       result.put(this.graph.getVertex(targetVerticeId).toString(), max_dist);
+    }
+
+    return result;
+  }
+
+  public HashMap<Vertex, Float> closenessCentrality() {
+    HashMap<Vertex, Float> result = new HashMap<>();
+
+    for (Vertex currentVertex : this.graph.getVertices()) {
+      int totalDist = 0;
+
+      Set<Vertex> verticesVisited = new HashSet<>();
+
+      Queue<Map.Entry<Vertex, Integer>> queue = new LinkedList<>();
+      queue.add(Map.entry(currentVertex, totalDist));
+
+      int numberOfReachableVertices = 0;
+
+      while (!queue.isEmpty()) {
+        Map.Entry<Vertex, Integer> item = queue.poll();
+
+        Vertex vertex = item.getKey();
+        int dist = item.getValue();
+
+        // Caso o vértice já foi visitado não processa ele
+        if (verticesVisited.contains(vertex)) {
+          continue;
+        }
+
+        numberOfReachableVertices++;
+        verticesVisited.add(vertex);
+
+        for (EdgeTo edge : vertex.getEdges()) {
+          queue.add(Map.entry(edge.getVertex(), dist + 1));
+        }
+
+        totalDist += dist;
+      }
+
+      if (totalDist == 0) {
+        result.put(currentVertex, 0f);
+      } else {
+        result.put(currentVertex, (numberOfReachableVertices - 1) / (float) totalDist);
+      }
     }
 
     return result;

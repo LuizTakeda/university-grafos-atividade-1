@@ -4,6 +4,10 @@ public class App {
 
     BreadthFirstPaths bfs = new BreadthFirstPaths(graph);
 
+    System.out.println("\nEccentricity");
     System.out.println(bfs.eccentricity());
+
+    System.out.println("\nClosenessCentrality");
+    System.out.println(bfs.closenessCentrality());
   }
 }
