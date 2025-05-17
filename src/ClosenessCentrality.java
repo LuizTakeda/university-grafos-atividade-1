@@ -6,6 +6,23 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Vector;
 
+/**
+ * Centralidade de Proximidade (Closeness Centrality)
+ * 
+ * A closeness centrality mede a proximidade média de um vértice em
+ * relação a todos os outros vértices alcançáveis.
+ * 
+ * Fórmula Normalizada: C(v) = N - 1/ sum(d(v, ui))
+ * 
+ * Onde `N` é o número total de vértices alcançáveis e `d(v, u)` é a menor
+ * distância de `v` até `u`.
+ * 
+ * **Interpretação**: Quanto maior o valor, mais "central" é o vértice na rede.
+ * 
+ * **Cálculo**: Para cada vértice, é realizada uma BFS para somar as distâncias
+ * mínimas até os demais.
+ * 
+ */
 public class ClosenessCentrality {
   // Grafo onde a centralidade será calculada
   private Graph graph;

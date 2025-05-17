@@ -6,6 +6,17 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Vector;
 
+/**
+ * Excentricidade (Eccentricity)
+ *
+ * A excentricidade de um vértice `v` é a maior distância entre `v` e qualquer
+ * outro vértice que possa ser alcançado a partir dele.
+ *
+ * Significado: Mede o "alcance" máximo de um vértice no grafo.
+ * Cálculo: Para cada vértice, realiza-se uma busca em largura (BFS) para
+ * encontrar as distâncias mínimas até todos os demais, e seleciona-se a maior
+ * delas.
+ */
 public class Eccentricity {
   // Grafo utilizado para o cálculo da excentricidade
   private Graph graph;
@@ -65,7 +76,7 @@ public class Eccentricity {
   }
 
   // Retorna os valores de excentricidade calculados
-  public Vector<Entry<Vertex, Integer>> getValues(){
+  public Vector<Entry<Vertex, Integer>> getValues() {
     return this.eccentricityValues;
   }
 
