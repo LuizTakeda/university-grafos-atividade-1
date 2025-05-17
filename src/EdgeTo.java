@@ -9,8 +9,8 @@ public class EdgeTo {
     return this.vertex;
   }
 
-   @Override
-    public String toString() {
-        return this.vertex.toString();
-    }
+  @Override
+  public String toString() {
+    return this.vertex.getName();
+  }
 }

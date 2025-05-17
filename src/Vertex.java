@@ -30,20 +30,12 @@ public class Vertex {
     return this.edges;
   }
 
-  public int getSize() {
-    return this.edges.size();
-  }
-
-  public String getName() {
+  public String getName(){
     return this.name;
-  }
-
-  public String getId() {
-    return this.id;
   }
 
   @Override
   public String toString() {
-    return this.id + " " + this.name;
+    return this.name + "->" + this.edges.toString();
   }
 }

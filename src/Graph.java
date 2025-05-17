@@ -1,4 +1,5 @@
 import java.io.File;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -6,12 +7,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class Graph {
-
-  private HashMap<String, Vertex> vertices;
+  private TreeMap<String, Vertex> vertices;
 
   /**
    * Cria um grafo a partir de um arquivo GEXF.
@@ -19,7 +19,9 @@ public class Graph {
    * @param path Caminho para o arquivo GEXF
    */
   public Graph(String path) {
-    this.vertices = new HashMap<>();
+    this.vertices = new TreeMap<>((a, b) -> {
+      return Float.compare(Float.parseFloat(a), Float.parseFloat(b));
+    });
 
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -52,12 +54,6 @@ public class Graph {
         this.vertices.get(sourceId).addEdge(new EdgeTo(targetVertex));
         this.vertices.get(targetId).addEdge(new EdgeTo(sourceVertex));
       }
-
-      this.vertices.forEach((key, vertex) -> {
-        System.out.println(vertex);
-        System.out.println(vertex.getEdges());
-      });
-
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -71,11 +67,16 @@ public class Graph {
     return this.vertices.get(id);
   }
 
-  public Set<String> getVerticesId(){
+  public Set<String> getVerticesId() {
     return this.vertices.keySet();
   }
 
-  public Collection<Vertex> getVertices(){
+  public Collection<Vertex> getVertices() {
     return this.vertices.values();
+  }
+
+  @Override
+  public String toString() {
+    return this.vertices.toString();
   }
 }
